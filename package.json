@@ -1,0 +1,21 @@
+{
+  "name": "papeer",
+  "version": "1.0.0",
+  "description": "Resume Builder (MVP)",
+  "license": "ISC",
+  "author": "Sham Shivani",
+  "type": "commonjs",
+  "main": "server.js",
+  "scripts": {
+    "dev": "concurrently \"npm run dev --prefix frontend\" \"npm run dev --prefix backend\"",
+    "install:frontend": "npm install --prefix frontend",
+    "install:backend": "npm install --prefix backend",
+    "start": "npm run start --prefix backend",
+    "build": "npm run build --prefix frontend",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "test": "echo \"No tests defined\""
+  },
+  "dependencies": {
+    "concurrently": "^9.1.2"
+  }
+}
