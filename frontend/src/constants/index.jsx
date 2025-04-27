@@ -63,7 +63,7 @@ export const educationInputs = [
 export const skillInputs = [
   {
     name: "skill_name",
-    label: "Skill",
+    label: "Name",
     placeholder: "JavaScript",
     type: "text",
   },
@@ -71,7 +71,7 @@ export const skillInputs = [
     name: "proficiency",
     label: "Proficiency Level",
     placeholder: "Beginner, Intermediate, Expert",
-    type: "text",
+    type: "select",
   },
 ];
 
@@ -128,12 +128,6 @@ export const projectInputs = [
     label: "Project Description",
     placeholder: "Briefly describe the project...",
     type: "textarea",
-  },
-  {
-    name: "tech_stack",
-    label: "Tech Stack",
-    placeholder: "e.g., React, Node.js, MongoDB",
-    type: "text",
   },
   {
     name: "project_url",

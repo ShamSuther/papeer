@@ -28,13 +28,16 @@ import { CircleMinus, CirclePlus } from "lucide-react";
 import { useEffect, useState } from "react";
 import { DatePicker } from "./DatePicker";
 import { Separator } from "./ui/separator";
-import FormTextarea from "./FromTextArea";
+import FormTextarea from "./FormTextArea";
 import FormInput from "./FormInput";
+import AddFormBtn from "./AddFormBtn";
+import RemFormBtn from "./RemFormBtn";
 
 import {
   personalInfoInputs,
   educationInputs,
   experienceInputs,
+  skillInputs,
 } from "@/constants";
 
 /* 
@@ -99,7 +102,7 @@ const formSchema = z.object({
 
 export function MainForm() {
   const [edu, setEdu] = useState(false);
-  const initial = {
+  const initials = {
     name: "",
     email: "",
     mobile_number: "",
@@ -115,6 +118,7 @@ export function MainForm() {
         description: "",
       },
     ],
+    skills: [{ skill_name: "", proficiency: "" }],
     experience: [
       {
         job_title: "",
@@ -127,12 +131,33 @@ export function MainForm() {
         location_type: "",
       },
     ],
+    projects: [
+      {
+        project_name: "",
+        description: "",
+        project_url: "",
+      },
+    ],
+    certifications: [
+      {
+        title: "",
+        issuer: "",
+        credential_url: "",
+      },
+    ],
   };
+
   const [resume, setResume] = useState();
 
   const form = useForm({
     resolver: zodResolver(formSchema),
-    defaultValues: resume,
+    defaultValues: {
+      name: "",
+      email: "",
+      mobile_number: "",
+      location: "",
+      summary: "",
+    },
   });
 
   // education fields
@@ -145,11 +170,31 @@ export function MainForm() {
     name: "education",
   });
 
+  // skills fields
+  const {
+    fields: skillFields,
+    append: appendSkill,
+    remove: removeSkill,
+  } = useFieldArray({
+    control: form.control,
+    name: "skills",
+  });
+
   // experience fields
   const {
     fields: expFields,
     append: appendExp,
     remove: removeExp,
+  } = useFieldArray({
+    control: form.control,
+    name: "experience",
+  });
+
+  // experience fields
+  const {
+    fields: projectFields,
+    append: appendProject,
+    remove: removeProject,
   } = useFieldArray({
     control: form.control,
     name: "experience",
@@ -190,10 +235,11 @@ export function MainForm() {
                     return (
                       <FormTextarea
                         key={id}
-                        control={form.control}
-                        name={field.name}
-                        label={field.label}
-                        placeholder={field.placeholder}
+                        id={field.name}
+                        form={form}
+                        fieldName={field.name}
+                        fieldConfig={field}
+                        controlled={false}
                       />
                     );
                   }
@@ -201,12 +247,20 @@ export function MainForm() {
                   return (
                     <FormInput
                       key={id}
-                      control={form.control}
-                      name={field.name}
-                      label={field.label}
-                      placeholder={field.placeholder}
-                      type={field.type}
+                      id={field.name}
+                      form={form}
+                      fieldName={field.name}
+                      fieldConfig={field}
+                      controlled={false}
                     />
+                    // <FormInput
+                    //   key={id}
+                    //   control={form.control}
+                    //   name={field.name}
+                    //   label={field.label}
+                    //   placeholder={field.placeholder}
+                    //   type={field.type}
+                    // />
                   );
                 })}
               </div>
@@ -244,64 +298,75 @@ export function MainForm() {
 
                     if (fieldConfig.type === "textarea") {
                       return (
-                        <FormField
-                          key={id}
-                          control={form.control}
-                          name={fieldName}
-                          render={({ field }) => (
-                            <FormItem className="gap-1 m-0 mb-4">
-                              <FormLabel className="text-neutral-600 mb-0.75">
-                                {fieldConfig.label}
-                              </FormLabel>
-                              <FormControl>
-                                <Textarea
-                                  {...form.register(fieldName)}
-                                  placeholder={fieldConfig.placeholder}
-                                  className="h-[6rem] resize-none"
-                                  {...field}
-                                />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
+                        <>
+                          <FormTextarea
+                            key={id}
+                            id={fieldName}
+                            form={form}
+                            fieldName={fieldName}
+                            fieldConfig={fieldConfig}
+                          />
+                        </>
                       );
                     }
 
                     return (
-                      <FormField
+                      <FormInput
                         key={id}
-                        control={form.control}
-                        name={fieldName}
-                        render={({ field }) => (
-                          <FormItem className="gap-1 m-0 mb-4">
-                            <FormLabel className="text-neutral-600 mb-0.75">
-                              {fieldConfig.label}
-                            </FormLabel>
-                            <FormControl>
-                              <Input
-                                {...form.register(fieldName)}
-                                type={fieldConfig.type}
-                                placeholder={fieldConfig.placeholder}
-                                {...field}
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
+                        id={fieldName}
+                        form={form}
+                        fieldName={fieldName}
+                        fieldConfig={fieldConfig}
                       />
                     );
                   })}
 
                   {/* Remove Education Button */}
-                  <Button
-                    type="button"
-                    variant="outline"
-                    className="hover:text-red-500 hover:bg-red-100 hover:border-red-200 w-full py-6 px-4 cursor-pointer rounded-lg"
-                    onClick={() => removeEdu(i)}
-                  >
-                    <CircleMinus /> Remove Education
-                  </Button>
+                  <RemFormBtn
+                    text={"Remove Education"}
+                    action={() => removeEdu(i)}
+                  />
+                </div>
+              ))}
+
+              {/* skills */}
+
+              {skillFields.map((item, i) => (
+                <div className="skills" key={`skill-${i}`}>
+                  <Separator className="mb-4" />
+                  <CardTitle className="mb-4">Skill</CardTitle>
+
+                  {skillInputs.map((fieldConfig, id) => {
+                    const fieldName = `skills.${i}.${fieldConfig.name}`;
+
+                    if (fieldConfig.type === "select") {
+                      return (
+                        <FormInput
+                          key={id}
+                          id={fieldName}
+                          form={form}
+                          fieldName={fieldName}
+                          fieldConfig={fieldConfig}
+                        />
+                      );
+                    }
+
+                    return (
+                      <FormInput
+                        key={id}
+                        id={fieldName}
+                        form={form}
+                        fieldName={fieldName}
+                        fieldConfig={fieldConfig}
+                      />
+                    );
+                  })}
+
+                  {/* Remove Skills Button */}
+                  <RemFormBtn
+                    text={"Remove Skill"}
+                    action={() => removeSkill(i)}
+                  />
                 </div>
               ))}
 
@@ -389,52 +454,40 @@ export function MainForm() {
                   })}
 
                   {/* Remove Experience Button */}
-                  <Button
-                    type="button"
-                    variant="outline"
-                    className="hover:text-red-500 hover:bg-red-100 hover:border-red-200 w-full py-6 px-4 cursor-pointer rounded-lg"
-                    onClick={() => removeExp(i)}
-                  >
-                    <CircleMinus /> Remove Experience
-                  </Button>
+                  <RemFormBtn
+                    text={"Remove Experience"}
+                    action={() => removeExp(i)}
+                  />
                 </div>
               ))}
 
               <div className="btn_group space-y-4">
-                <Button
-                  type="button"
-                  variant={"outline"}
-                  className={
-                    "bg-neutral-200 w-full py-6 px-4 cursor-pointer rounded-lg"
-                  }
-                  onClick={() => {
-                    appendEdu(initial.education[0]);
-                  }}
-                >
-                  <CirclePlus /> Add Skills
-                </Button>
-                <Button
-                  type="button"
-                  variant={"outline"}
-                  className={
-                    "bg-neutral-200 w-full py-6 px-4 cursor-pointer rounded-lg"
-                  }
-                  onClick={() => {
-                    appendEdu(initial.education[0]);
-                  }}
-                >
-                  <CirclePlus /> Add Education
-                </Button>
-                <Button
-                  type="button"
-                  variant={"outline"}
-                  className={
-                    "bg-neutral-200 w-full py-6 px-4 cursor-pointer rounded-lg"
-                  }
-                  onClick={() => appendExp(initial.experience[0])}
-                >
-                  <CirclePlus /> Add Experience
-                </Button>
+                {/* add education */}
+                <AddFormBtn
+                  text={"Add Education"}
+                  action={() => appendEdu(initials.education[0])}
+                />
+                {/* add skills */}
+                <AddFormBtn
+                  text={"Add Skills"}
+                  action={() => appendSkill(initials.skills[0])}
+                />
+                {/* add experience */}
+                <AddFormBtn
+                  text={"Add Experience"}
+                  action={() => appendExp(initials.experience[0])}
+                />
+                {/* add project */}
+                <AddFormBtn
+                  text={"Add Project"}
+                  action={() => appendProject(initials.projects[0])}
+                />
+                {/* add certification */}
+                <AddFormBtn
+                  text={"Add Certification"}
+                  action={() => appendProject(initials.projects[0])}
+                />
+                {/* submit */}
                 <Button
                   className={"w-full py-6 px-4 cursor-pointer rounded-lg"}
                   type="submit"

@@ -7,17 +7,27 @@ import {
 } from "./ui/form";
 import { Textarea } from "./ui/textarea";
 
-export default function FormTextarea({ control, name, label, placeholder }) {
+export default function FormTextarea({
+  id,
+  form,
+  fieldName,
+  fieldConfig,
+  controlled,
+}) {
   return (
     <FormField
-      control={control}
-      name={name}
+      key={id}
+      control={form.control}
+      name={fieldName}
       render={({ field }) => (
         <FormItem className="gap-1 m-0 mb-4">
-          <FormLabel className="text-neutral-600 mb-0.75">{label}</FormLabel>
+          <FormLabel className="text-neutral-600 mb-0.75">
+            {fieldConfig.label}
+          </FormLabel>
           <FormControl>
             <Textarea
-              placeholder={placeholder}
+              {...(controlled ? form.register(fieldName) : {})}
+              placeholder={fieldConfig.placeholder}
               className="h-[6rem] resize-none"
               {...field}
             />
