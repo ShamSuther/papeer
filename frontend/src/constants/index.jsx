@@ -78,13 +78,13 @@ export const skillInputs = [
 
 export const experienceInputs = [
   {
-    name: "jobTitle",
+    name: "job_title",
     label: "Job Title",
     placeholder: "Sales Manager",
     type: "text",
   },
   {
-    name: "employmentType",
+    name: "employment_type",
     label: "Employment Type",
     placeholder: "Full-time, Part-time, Contract, etc.",
     type: "text",
@@ -95,8 +95,6 @@ export const experienceInputs = [
     placeholder: "Google",
     type: "text",
   },
-  { name: "startDate", label: "Start Date", type: "date" },
-  { name: "endDate", label: "End Date", type: "date" },
   {
     name: "description",
     label: "Role Description",
@@ -107,12 +105,6 @@ export const experienceInputs = [
     name: "location",
     label: "Work Location",
     placeholder: "e.g., Address, Karachi, Sindh, Pakistan",
-    type: "text",
-  },
-  {
-    name: "locationType",
-    label: "Location Type",
-    placeholder: "On-site, Remote, Hybrid",
     type: "text",
   },
 ];

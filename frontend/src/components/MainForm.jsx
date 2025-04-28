@@ -192,6 +192,7 @@ export function MainForm() {
   } = useFieldArray({
     control: form.control,
     name: "experience",
+    rules: { maxLength: 4 },
   });
 
   // project fields
@@ -202,6 +203,7 @@ export function MainForm() {
   } = useFieldArray({
     control: form.control,
     name: "project",
+    rules: { maxLength: 4 },
   });
 
   // certification fields
@@ -244,11 +246,12 @@ export function MainForm() {
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
               {/* personal information */}
               <div className="personal_info">
-                {personalInfoInputs.map((field, id) => {
+                {personalInfoInputs.map((field, i) => {
+                  const key = `${field.name}-${i}`;
                   if (field.type === "textarea") {
                     return (
                       <FormTextarea
-                        key={id}
+                        key={key}
                         id={field.name}
                         form={form}
                         fieldName={field.name}
@@ -260,7 +263,7 @@ export function MainForm() {
 
                   return (
                     <FormInput
-                      key={id}
+                      key={key}
                       id={field.name}
                       form={form}
                       fieldName={field.name}
@@ -272,81 +275,85 @@ export function MainForm() {
               </div>
 
               {/* education */}
-              {eduFields.map((item, i) => (
-                <div className="education" key={`education-${i}`}>
-                  <Separator className="mb-4" />
-                  <CardTitle className="mb-4">Education</CardTitle>
+              {eduFields.map((item, i) => {
+                return (
+                  <div className="education" key={item.id}>
+                    <Separator className="mb-4" />
+                    <CardTitle className="mb-4">Education</CardTitle>
 
-                  {educationInputs.map((fieldConfig, id) => {
-                    const fieldName = `education.${i}.${fieldConfig.name}`;
+                    {educationInputs.map((fieldConfig, id) => {
+                      const key = `${fieldConfig.name}-${id}`;
+                      const fieldName = `education.${i}.${fieldConfig.name}`;
 
-                    if (fieldConfig.type === "date") {
+                      if (fieldConfig.type === "date") {
+                        return (
+                          <FormField
+                            key={key}
+                            control={form.control}
+                            name={fieldName}
+                            render={({ field }) => (
+                              <FormItem className="gap-1 m-0 mb-4 w-full">
+                                <FormLabel className="text-neutral-600 mb-0.75">
+                                  {fieldConfig.label}
+                                </FormLabel>
+                                <DatePicker
+                                  {...form.register(fieldName)}
+                                  field={field}
+                                />
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                        );
+                      }
+
+                      if (fieldConfig.type === "textarea") {
+                        return (
+                          <FormTextarea
+                            key={key}
+                            id={fieldName}
+                            form={form}
+                            fieldName={fieldName}
+                            fieldConfig={fieldConfig}
+                          />
+                        );
+                      }
+
                       return (
-                        <FormField
-                          key={id}
-                          control={form.control}
-                          name={fieldName}
-                          render={({ field }) => (
-                            <FormItem className="gap-1 m-0 mb-4 w-full">
-                              <FormLabel className="text-neutral-600 mb-0.75">
-                                {fieldConfig.label}
-                              </FormLabel>
-                              <DatePicker
-                                {...form.register(fieldName)}
-                                field={field}
-                              />
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                      );
-                    }
-
-                    if (fieldConfig.type === "textarea") {
-                      return (
-                        <FormTextarea
-                          key={id}
+                        <FormInput
+                          key={key}
                           id={fieldName}
                           form={form}
                           fieldName={fieldName}
                           fieldConfig={fieldConfig}
                         />
                       );
-                    }
+                    })}
 
-                    return (
-                      <FormInput
-                        key={id}
-                        id={fieldName}
-                        form={form}
-                        fieldName={fieldName}
-                        fieldConfig={fieldConfig}
-                      />
-                    );
-                  })}
-
-                  {/* Remove Education Button */}
-                  <RemFormBtn
-                    text={"Remove Education"}
-                    action={() => removeEdu(i)}
-                  />
-                </div>
-              ))}
+                    {/* Remove Education Button */}
+                    <RemFormBtn
+                      text={"Remove Education"}
+                      action={() => removeEdu(i)}
+                    />
+                  </div>
+                );
+              })}
 
               {/* skills */}
 
               {skillFields.map((item, i) => (
-                <div className="skills" key={`skill-${i}`}>
+                <div className="skills" key={item.id}>
                   <Separator className="mb-4" />
                   <CardTitle className="mb-4">Skill</CardTitle>
 
                   {skillInputs.map((fieldConfig, id) => {
+                    const key = `${fieldConfig.name}-${id}`;
                     const fieldName = `skills.${i}.${fieldConfig.name}`;
 
                     if (fieldConfig.type === "select") {
                       return (
                         <FormSelect
-                          key={id}
+                          key={key}
                           id={fieldName}
                           form={form}
                           fieldName={fieldName}
@@ -357,7 +364,7 @@ export function MainForm() {
 
                     return (
                       <FormInput
-                        key={id}
+                        key={key}
                         id={fieldName}
                         form={form}
                         fieldName={fieldName}
@@ -377,17 +384,18 @@ export function MainForm() {
               {/* experience */}
 
               {expFields.map((item, i) => (
-                <div className="experience" key={`experience-${i}`}>
+                <div className="experience" key={item.id}>
                   <Separator className="mb-4" />
                   <CardTitle className="mb-4">Experience</CardTitle>
 
                   {experienceInputs.map((fieldConfig, id) => {
+                    const key = `${fieldConfig.name}-${id}`;
                     const fieldName = `experience.${i}.${fieldConfig.name}`;
 
                     if (fieldConfig.type === "date") {
                       return (
                         <FormField
-                          key={id}
+                          key={key}
                           control={form.control}
                           name={fieldName}
                           render={({ field }) => (
@@ -409,7 +417,7 @@ export function MainForm() {
                     if (fieldConfig.type === "textarea") {
                       return (
                         <FormTextarea
-                          key={id}
+                          key={key}
                           id={fieldName}
                           form={form}
                           fieldName={fieldName}
@@ -419,26 +427,12 @@ export function MainForm() {
                     }
 
                     return (
-                      <FormField
-                        key={id}
-                        control={form.control}
-                        name={fieldName}
-                        render={({ field }) => (
-                          <FormItem className="gap-1 m-0 mb-4">
-                            <FormLabel className="text-neutral-600 mb-0.75">
-                              {fieldConfig.label}
-                            </FormLabel>
-                            <FormControl>
-                              <Input
-                                {...form.register(fieldName)}
-                                type={fieldConfig.type}
-                                placeholder={fieldConfig.placeholder}
-                                {...field}
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
+                      <FormInput
+                        key={key}
+                        id={fieldName}
+                        form={form}
+                        fieldName={fieldName}
+                        fieldConfig={fieldConfig}
                       />
                     );
                   })}
@@ -454,17 +448,18 @@ export function MainForm() {
               {/* projects */}
 
               {projectFields.map((item, i) => (
-                <div className="project" key={`skill-${i}`}>
+                <div className="project" key={item.id}>
                   <Separator className="mb-4" />
                   <CardTitle className="mb-4">Project</CardTitle>
 
                   {projectInputs.map((fieldConfig, id) => {
+                    const key = `${fieldConfig.name}-${id}`;
                     const fieldName = `project.${i}.${fieldConfig.name}`;
 
                     if (fieldConfig.type === "textarea") {
                       return (
                         <FormTextarea
-                          key={id}
+                          key={key}
                           id={fieldName}
                           form={form}
                           fieldName={fieldName}
@@ -475,7 +470,7 @@ export function MainForm() {
 
                     return (
                       <FormInput
-                        key={id}
+                        key={key}
                         id={fieldName}
                         form={form}
                         fieldName={fieldName}

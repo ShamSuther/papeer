@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { MainForm } from "./components/MainForm";
+import Preview from "./components/Preview";
 
 function App() {
   return (
@@ -10,8 +11,7 @@ function App() {
             <div className="w-full max-w-sm">
               <MainForm />
             </div>
-            <div className="preview">
-            </div>
+            <Preview />
           </div>
         </div>
       </main>
