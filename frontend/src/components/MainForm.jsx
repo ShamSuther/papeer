@@ -28,8 +28,10 @@ import { CircleMinus, CirclePlus } from "lucide-react";
 import { useEffect, useState } from "react";
 import { DatePicker } from "./DatePicker";
 import { Separator } from "./ui/separator";
-import FormTextarea from "./FormTextArea";
 import FormInput from "./FormInput";
+import FormSelect from "./FormSelect";
+import FormTextarea from "./FormTextArea";
+
 import AddFormBtn from "./AddFormBtn";
 import RemFormBtn from "./RemFormBtn";
 
@@ -38,6 +40,8 @@ import {
   educationInputs,
   experienceInputs,
   skillInputs,
+  projectInputs,
+  certInputs,
 } from "@/constants";
 
 /* 
@@ -190,14 +194,24 @@ export function MainForm() {
     name: "experience",
   });
 
-  // experience fields
+  // project fields
   const {
     fields: projectFields,
     append: appendProject,
     remove: removeProject,
   } = useFieldArray({
     control: form.control,
-    name: "experience",
+    name: "project",
+  });
+
+  // certification fields
+  const {
+    fields: certFields,
+    append: appendCert,
+    remove: removeCert,
+  } = useFieldArray({
+    control: form.control,
+    name: "certification",
   });
 
   const { clearErrors, formState } = form;
@@ -253,14 +267,6 @@ export function MainForm() {
                       fieldConfig={field}
                       controlled={false}
                     />
-                    // <FormInput
-                    //   key={id}
-                    //   control={form.control}
-                    //   name={field.name}
-                    //   label={field.label}
-                    //   placeholder={field.placeholder}
-                    //   type={field.type}
-                    // />
                   );
                 })}
               </div>
@@ -298,15 +304,13 @@ export function MainForm() {
 
                     if (fieldConfig.type === "textarea") {
                       return (
-                        <>
-                          <FormTextarea
-                            key={id}
-                            id={fieldName}
-                            form={form}
-                            fieldName={fieldName}
-                            fieldConfig={fieldConfig}
-                          />
-                        </>
+                        <FormTextarea
+                          key={id}
+                          id={fieldName}
+                          form={form}
+                          fieldName={fieldName}
+                          fieldConfig={fieldConfig}
+                        />
                       );
                     }
 
@@ -341,7 +345,7 @@ export function MainForm() {
 
                     if (fieldConfig.type === "select") {
                       return (
-                        <FormInput
+                        <FormSelect
                           key={id}
                           id={fieldName}
                           form={form}
@@ -404,26 +408,12 @@ export function MainForm() {
 
                     if (fieldConfig.type === "textarea") {
                       return (
-                        <FormField
+                        <FormTextarea
                           key={id}
-                          control={form.control}
-                          name={fieldName}
-                          render={({ field }) => (
-                            <FormItem className="gap-1 m-0 mb-4">
-                              <FormLabel className="text-neutral-600 mb-0.75">
-                                {fieldConfig.label}
-                              </FormLabel>
-                              <FormControl>
-                                <Textarea
-                                  {...form.register(fieldName)}
-                                  placeholder={fieldConfig.placeholder}
-                                  className="h-[6rem] resize-none"
-                                  {...field}
-                                />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
+                          id={fieldName}
+                          form={form}
+                          fieldName={fieldName}
+                          fieldConfig={fieldConfig}
                         />
                       );
                     }
@@ -461,6 +451,75 @@ export function MainForm() {
                 </div>
               ))}
 
+              {/* projects */}
+
+              {projectFields.map((item, i) => (
+                <div className="project" key={`skill-${i}`}>
+                  <Separator className="mb-4" />
+                  <CardTitle className="mb-4">Project</CardTitle>
+
+                  {projectInputs.map((fieldConfig, id) => {
+                    const fieldName = `project.${i}.${fieldConfig.name}`;
+
+                    if (fieldConfig.type === "textarea") {
+                      return (
+                        <FormTextarea
+                          key={id}
+                          id={fieldName}
+                          form={form}
+                          fieldName={fieldName}
+                          fieldConfig={fieldConfig}
+                        />
+                      );
+                    }
+
+                    return (
+                      <FormInput
+                        key={id}
+                        id={fieldName}
+                        form={form}
+                        fieldName={fieldName}
+                        fieldConfig={fieldConfig}
+                      />
+                    );
+                  })}
+
+                  {/* Remove Project Button */}
+                  <RemFormBtn
+                    text={"Remove Project"}
+                    action={() => removeProject(i)}
+                  />
+                </div>
+              ))}
+
+              {/* certifications */}
+
+              {certFields.map((item, i) => (
+                <div className="certification" key={`skill-${i}`}>
+                  <Separator className="mb-4" />
+                  <CardTitle className="mb-4">Certification</CardTitle>
+
+                  {certInputs.map((fieldConfig, id) => {
+                    const fieldName = `certification.${i}.${fieldConfig.name}`;
+                    return (
+                      <FormInput
+                        key={id}
+                        id={fieldName}
+                        form={form}
+                        fieldName={fieldName}
+                        fieldConfig={fieldConfig}
+                      />
+                    );
+                  })}
+
+                  {/* Remove Project Button */}
+                  <RemFormBtn
+                    text={"Remove Certification"}
+                    action={() => removeCert(i)}
+                  />
+                </div>
+              ))}
+
               <div className="btn_group space-y-4">
                 {/* add education */}
                 <AddFormBtn
@@ -485,7 +544,7 @@ export function MainForm() {
                 {/* add certification */}
                 <AddFormBtn
                   text={"Add Certification"}
-                  action={() => appendProject(initials.projects[0])}
+                  action={() => appendCert(initials.certifications[0])}
                 />
                 {/* submit */}
                 <Button

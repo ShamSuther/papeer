@@ -70,8 +70,9 @@ export const skillInputs = [
   {
     name: "proficiency",
     label: "Proficiency Level",
-    placeholder: "Beginner, Intermediate, Expert",
+    placeholder: "Select you skill level",
     type: "select",
+    data: ["beginner", "intermediate", "expert"],
   },
 ];
 
@@ -120,27 +121,27 @@ export const projectInputs = [
   {
     name: "project_name",
     label: "Project Name",
-    placeholder: "Personal Portfolio Website",
+    placeholder: "John Doe",
     type: "text",
   },
   {
     name: "description",
     label: "Project Description",
-    placeholder: "Briefly describe the project...",
+    placeholder: "John Doe is a ...",
     type: "textarea",
   },
   {
     name: "project_url",
     label: "Project URL",
-    placeholder: "https://yourprojectlink.com",
+    placeholder: "https://johndoe.com",
     type: "text",
   },
 ];
 
-export const certificationInputs = [
+export const certInputs = [
   {
     name: "title",
-    label: "Certification Title",
+    label: "Title",
     placeholder: "AWS Certified Solutions Architect",
     type: "text",
   },
