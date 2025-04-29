@@ -118,3 +118,11 @@
     @apply bg-background text-foreground;
   }
 }
+
+.section-title {
+  @apply w-full text-[#424141] leading-none text-[1.3rem] mb-[0.5rem] border-b-[0.0419rem] border-[#424141];
+}
+
+.link {
+  @apply text-primary hover:underline;
+}

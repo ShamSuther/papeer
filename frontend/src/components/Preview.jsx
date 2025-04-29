@@ -49,6 +49,7 @@ export default function Preview() {
       name: "Smart Health Tracker",
       description:
         "A mobile app that monitors real-time health metrics like heart rate, steps, and sleep patterns using React Native and Firebase.",
+      project_url: "https://www.google.com/",
     },
     {
       name: "AI-Powered Resume Builder",
@@ -132,16 +133,13 @@ export default function Preview() {
         <h1 className="text-[1.8rem] leading-none mt-4 mb-3">John Doe</h1>
         <p className="text-muted-foreground text-[0.9rem]">
           +1 123 456 7890 |{" "}
-          <a
-            href="mailto:johndoe@example.com"
-            className="text-primary hover:underline"
-          >
+          <a href="mailto:johndoe@example.com" className="link">
             johndoe@example.com
           </a>{" "}
           |{" "}
           <a
             href="https://www.linkedin.com/in/johndoe"
-            className="text-primary hover:underline"
+            className="link"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -229,7 +227,16 @@ export default function Preview() {
         {projects.map((item, i) => (
           <div key={`project-${i}`}>
             <p className="text-[1.1669rem] mb-[0.1669rem] leading-none">
-              {item.name}:
+              {item.name}
+              &nbsp;
+              {item.project_url ? (
+                <a className="link" href={item.project_url}>
+                  (view)
+                </a>
+              ) : (
+                ""
+              )}
+              :
             </p>
             <ul className="list-disc list-outside pl-5 whitespace-normal mb-2">
               <li className="text-base leading-[1.15]">{item.description}</li>
@@ -244,10 +251,7 @@ export default function Preview() {
         <ul className="list-disc list-outside pl-5 whitespace-normal mb-2">
           {certifications.map((item, i) => (
             <li key={`cert-${i}`} className="text-base leading-[1.15]">
-              <a
-                href={item.credential_url}
-                className="text-primary hover:underline"
-              >
+              <a href={item.credential_url} className="link">
                 {item.title}{" "}
                 <span className="text-[#424141] italic">({item.issuer})</span>
               </a>

@@ -45,13 +45,13 @@ export const educationInputs = [
     type: "text",
   },
   {
-    name: "fieldOfStudy",
+    name: "field_of_study",
     label: "Field of Study",
     placeholder: "Business",
     type: "text",
   },
-  { name: "startDate", label: "Start Date", type: "date" },
-  { name: "endDate", label: "End Date", type: "date" },
+  { name: "start_date", label: "Start Date", type: "date" },
+  { name: "end_date", label: "End Date", type: "date" },
   {
     name: "description",
     label: "Description",

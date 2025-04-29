@@ -10,7 +10,3 @@ body {
   /* height: 1123px; */
   font-family: 'Times New Roman', Times, serif;
 }
-
-.section-title {
-  @apply w-full text-[#424141] leading-none text-[1.3rem] mb-[0.5rem] border-b-[0.0419rem] border-[#424141];
-}

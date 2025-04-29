@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, useFieldArray } from "react-hook-form";
 import { z } from "zod";
-import { motion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -35,6 +35,8 @@ import FormTextarea from "./FormTextArea";
 import AddFormBtn from "./AddFormBtn";
 import RemFormBtn from "./RemFormBtn";
 
+import { formSchema } from "@/schemas/formSchema";
+
 import {
   personalInfoInputs,
   educationInputs,
@@ -43,66 +45,6 @@ import {
   projectInputs,
   certInputs,
 } from "@/constants";
-
-/* 
-name: "",
-      email: "",
-      mobile_number: "",
-      location: "",
-      summary: "",
-      education: {
-        name: "",
-        start_date: "",
-        end_date: "",
-      },
-      experience: {
-        job_title: "",
-        description: "",
-        company: "",
-        start_date: "",
-        end_date: "",
-      },
-      skills: [],
-*/
-
-const formSchema = z.object({
-  name: z
-    .string()
-    .min(4, {
-      message: "Name must be at least 4 characters.",
-    })
-    .trim(),
-  email: z
-    .string()
-    .email()
-    .min(5, {
-      message: "Email must be at least 5 characters.",
-    })
-    .trim(),
-  mobile_number: z
-    .string()
-    .min(10, {
-      message: "Mobile number must be at least 10 digits.",
-    })
-    .max(15, {
-      message: "Mobile number must be at maximum 15 digits.",
-    })
-    .refine((val) => /^[0-9+]*$/.test(val), {
-      message: "Mobile number can only contain digits and the '+' sign.",
-    }),
-  location: z
-    .string()
-    .min(10, {
-      message: "Location must be at least 10 characters.",
-    })
-    .trim(),
-  summary: z
-    .string()
-    .min(100, {
-      message: "Summary must be at least 100 characters.",
-    })
-    .trim(),
-});
 
 export function MainForm() {
   const [edu, setEdu] = useState(false);
@@ -161,6 +103,7 @@ export function MainForm() {
       mobile_number: "",
       location: "",
       summary: "",
+      education: [],
     },
   });
 
@@ -202,7 +145,7 @@ export function MainForm() {
     remove: removeProject,
   } = useFieldArray({
     control: form.control,
-    name: "project",
+    name: "projects",
     rules: { maxLength: 4 },
   });
 
@@ -213,7 +156,7 @@ export function MainForm() {
     remove: removeCert,
   } = useFieldArray({
     control: form.control,
-    name: "certification",
+    name: "certifications",
   });
 
   const { clearErrors, formState } = form;
@@ -228,7 +171,7 @@ export function MainForm() {
       }, 3000);
       return () => clearTimeout(timer);
     }
-  }, [clearErrors, errors]);
+  }, [clearErrors, errors, eduFields]);
 
   function onSubmit(values) {
     console.log(values);
@@ -242,27 +185,15 @@ export function MainForm() {
       </CardHeader>
       <CardContent>
         <Form {...form}>
-          <motion.div layout>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-              {/* personal information */}
-              <div className="personal_info">
-                {personalInfoInputs.map((field, i) => {
-                  const key = `${field.name}-${i}`;
-                  if (field.type === "textarea") {
-                    return (
-                      <FormTextarea
-                        key={key}
-                        id={field.name}
-                        form={form}
-                        fieldName={field.name}
-                        fieldConfig={field}
-                        controlled={false}
-                      />
-                    );
-                  }
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            {/* personal information */}
+            <div className="personal_info">
+              {personalInfoInputs.map((field, i) => {
+                const key = `${field.name}-${i}`;
 
+                if (field.type === "textarea") {
                   return (
-                    <FormInput
+                    <FormTextarea
                       key={key}
                       id={field.name}
                       form={form}
@@ -271,99 +202,63 @@ export function MainForm() {
                       controlled={false}
                     />
                   );
-                })}
-              </div>
+                }
 
-              {/* education */}
-              {eduFields.map((item, i) => {
                 return (
-                  <div className="education" key={item.id}>
-                    <Separator className="mb-4" />
-                    <CardTitle className="mb-4">Education</CardTitle>
-
-                    {educationInputs.map((fieldConfig, id) => {
-                      const key = `${fieldConfig.name}-${id}`;
-                      const fieldName = `education.${i}.${fieldConfig.name}`;
-
-                      if (fieldConfig.type === "date") {
-                        return (
-                          <FormField
-                            key={key}
-                            control={form.control}
-                            name={fieldName}
-                            render={({ field }) => (
-                              <FormItem className="gap-1 m-0 mb-4 w-full">
-                                <FormLabel className="text-neutral-600 mb-0.75">
-                                  {fieldConfig.label}
-                                </FormLabel>
-                                <DatePicker
-                                  {...form.register(fieldName)}
-                                  field={field}
-                                />
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                        );
-                      }
-
-                      if (fieldConfig.type === "textarea") {
-                        return (
-                          <FormTextarea
-                            key={key}
-                            id={fieldName}
-                            form={form}
-                            fieldName={fieldName}
-                            fieldConfig={fieldConfig}
-                          />
-                        );
-                      }
-
-                      return (
-                        <FormInput
-                          key={key}
-                          id={fieldName}
-                          form={form}
-                          fieldName={fieldName}
-                          fieldConfig={fieldConfig}
-                        />
-                      );
-                    })}
-
-                    {/* Remove Education Button */}
-                    <RemFormBtn
-                      text={"Remove Education"}
-                      action={() => removeEdu(i)}
-                    />
-                  </div>
+                  <FormInput
+                    key={key}
+                    id={field.name}
+                    form={form}
+                    fieldName={field.name}
+                    fieldConfig={field}
+                    controlled={false}
+                  />
                 );
               })}
+            </div>
 
-              {/* skills */}
+            {/* education */}
+            {eduFields.map((item, i) => (
+              <motion.div
+                key={item.id}
+                layout
+                className="education"
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                transition={{ duration: 0.3, ease: "easeInOut" }}
+              >
+                <Separator className="mb-4" />
+                <CardTitle className="mb-4">Education</CardTitle>
 
-              {skillFields.map((item, i) => (
-                <div className="skills" key={item.id}>
-                  <Separator className="mb-4" />
-                  <CardTitle className="mb-4">Skill</CardTitle>
+                {educationInputs.map((fieldConfig, _) => {
+                  const key = `${item.id}-${fieldConfig.name}`;
+                  const fieldName = `education.${i}.${fieldConfig.name}`;
 
-                  {skillInputs.map((fieldConfig, id) => {
-                    const key = `${fieldConfig.name}-${id}`;
-                    const fieldName = `skills.${i}.${fieldConfig.name}`;
-
-                    if (fieldConfig.type === "select") {
-                      return (
-                        <FormSelect
-                          key={key}
-                          id={fieldName}
-                          form={form}
-                          fieldName={fieldName}
-                          fieldConfig={fieldConfig}
-                        />
-                      );
-                    }
-
+                  if (fieldConfig.type === "date") {
                     return (
-                      <FormInput
+                      <FormField
+                        key={key}
+                        control={form.control}
+                        name={fieldName}
+                        render={({ field }) => (
+                          <FormItem className="gap-1 m-0 mb-4 w-full">
+                            <FormLabel className="text-neutral-600 mb-0.75">
+                              {fieldConfig.label}
+                            </FormLabel>
+                            <DatePicker
+                              {...form.register(fieldName)}
+                              field={field}
+                            />
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    );
+                  }
+
+                  if (fieldConfig.type === "textarea") {
+                    return (
+                      <FormTextarea
                         key={key}
                         id={fieldName}
                         form={form}
@@ -371,63 +266,41 @@ export function MainForm() {
                         fieldConfig={fieldConfig}
                       />
                     );
-                  })}
+                  }
 
-                  {/* Remove Skills Button */}
-                  <RemFormBtn
-                    text={"Remove Skill"}
-                    action={() => removeSkill(i)}
-                  />
-                </div>
-              ))}
+                  return (
+                    <FormInput
+                      key={key}
+                      id={fieldName}
+                      form={form}
+                      fieldName={fieldName}
+                      fieldConfig={fieldConfig}
+                    />
+                  );
+                })}
 
-              {/* experience */}
+                {/* Remove Education Button */}
+                <RemFormBtn
+                  text={"Remove Education"}
+                  action={() => removeEdu(i)}
+                />
+              </motion.div>
+            ))}
 
-              {expFields.map((item, i) => (
-                <div className="experience" key={item.id}>
-                  <Separator className="mb-4" />
-                  <CardTitle className="mb-4">Experience</CardTitle>
+            {/* skills */}
 
-                  {experienceInputs.map((fieldConfig, id) => {
-                    const key = `${fieldConfig.name}-${id}`;
-                    const fieldName = `experience.${i}.${fieldConfig.name}`;
+            {skillFields.map((item, i) => (
+              <div className="skills" key={item.id}>
+                <Separator className="mb-4" />
+                <CardTitle className="mb-4">Skill</CardTitle>
 
-                    if (fieldConfig.type === "date") {
-                      return (
-                        <FormField
-                          key={key}
-                          control={form.control}
-                          name={fieldName}
-                          render={({ field }) => (
-                            <FormItem className="gap-1 m-0 mb-4 w-full">
-                              <FormLabel className="text-neutral-600 mb-0.75">
-                                {fieldConfig.label}
-                              </FormLabel>
-                              <DatePicker
-                                {...form.register(fieldName)}
-                                field={field}
-                              />
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                      );
-                    }
+                {skillInputs.map((fieldConfig, id) => {
+                  const key = `${item.id}-${fieldConfig.name}`;
+                  const fieldName = `skills.${i}.${fieldConfig.name}`;
 
-                    if (fieldConfig.type === "textarea") {
-                      return (
-                        <FormTextarea
-                          key={key}
-                          id={fieldName}
-                          form={form}
-                          fieldName={fieldName}
-                          fieldConfig={fieldConfig}
-                        />
-                      );
-                    }
-
+                  if (fieldConfig.type === "select") {
                     return (
-                      <FormInput
+                      <FormSelect
                         key={key}
                         id={fieldName}
                         form={form}
@@ -435,122 +308,198 @@ export function MainForm() {
                         fieldConfig={fieldConfig}
                       />
                     );
-                  })}
+                  }
 
-                  {/* Remove Experience Button */}
-                  <RemFormBtn
-                    text={"Remove Experience"}
-                    action={() => removeExp(i)}
-                  />
-                </div>
-              ))}
+                  return (
+                    <FormInput
+                      key={key}
+                      id={fieldName}
+                      form={form}
+                      fieldName={fieldName}
+                      fieldConfig={fieldConfig}
+                    />
+                  );
+                })}
 
-              {/* projects */}
-
-              {projectFields.map((item, i) => (
-                <div className="project" key={item.id}>
-                  <Separator className="mb-4" />
-                  <CardTitle className="mb-4">Project</CardTitle>
-
-                  {projectInputs.map((fieldConfig, id) => {
-                    const key = `${fieldConfig.name}-${id}`;
-                    const fieldName = `project.${i}.${fieldConfig.name}`;
-
-                    if (fieldConfig.type === "textarea") {
-                      return (
-                        <FormTextarea
-                          key={key}
-                          id={fieldName}
-                          form={form}
-                          fieldName={fieldName}
-                          fieldConfig={fieldConfig}
-                        />
-                      );
-                    }
-
-                    return (
-                      <FormInput
-                        key={key}
-                        id={fieldName}
-                        form={form}
-                        fieldName={fieldName}
-                        fieldConfig={fieldConfig}
-                      />
-                    );
-                  })}
-
-                  {/* Remove Project Button */}
-                  <RemFormBtn
-                    text={"Remove Project"}
-                    action={() => removeProject(i)}
-                  />
-                </div>
-              ))}
-
-              {/* certifications */}
-
-              {certFields.map((item, i) => (
-                <div className="certification" key={`skill-${i}`}>
-                  <Separator className="mb-4" />
-                  <CardTitle className="mb-4">Certification</CardTitle>
-
-                  {certInputs.map((fieldConfig, id) => {
-                    const fieldName = `certification.${i}.${fieldConfig.name}`;
-                    return (
-                      <FormInput
-                        key={id}
-                        id={fieldName}
-                        form={form}
-                        fieldName={fieldName}
-                        fieldConfig={fieldConfig}
-                      />
-                    );
-                  })}
-
-                  {/* Remove Project Button */}
-                  <RemFormBtn
-                    text={"Remove Certification"}
-                    action={() => removeCert(i)}
-                  />
-                </div>
-              ))}
-
-              <div className="btn_group space-y-4">
-                {/* add education */}
-                <AddFormBtn
-                  text={"Add Education"}
-                  action={() => appendEdu(initials.education[0])}
+                {/* Remove Skills Button */}
+                <RemFormBtn
+                  text={"Remove Skill"}
+                  action={() => removeSkill(i)}
                 />
-                {/* add skills */}
-                <AddFormBtn
-                  text={"Add Skills"}
-                  action={() => appendSkill(initials.skills[0])}
-                />
-                {/* add experience */}
-                <AddFormBtn
-                  text={"Add Experience"}
-                  action={() => appendExp(initials.experience[0])}
-                />
-                {/* add project */}
-                <AddFormBtn
-                  text={"Add Project"}
-                  action={() => appendProject(initials.projects[0])}
-                />
-                {/* add certification */}
-                <AddFormBtn
-                  text={"Add Certification"}
-                  action={() => appendCert(initials.certifications[0])}
-                />
-                {/* submit */}
-                <Button
-                  className={"w-full py-6 px-4 cursor-pointer rounded-lg"}
-                  type="submit"
-                >
-                  Submit
-                </Button>
               </div>
-            </form>
-          </motion.div>
+            ))}
+
+            {/* experience */}
+
+            {expFields.map((item, i) => (
+              <div className="experience" key={item.id}>
+                <Separator className="mb-4" />
+                <CardTitle className="mb-4">Experience</CardTitle>
+
+                {experienceInputs.map((fieldConfig, id) => {
+                  const key = `${fieldConfig.name}-${id}`;
+
+                  const fieldName = `experience.${i}.${fieldConfig.name}`;
+
+                  if (fieldConfig.type === "date") {
+                    return (
+                      <FormField
+                        key={key}
+                        control={form.control}
+                        name={fieldName}
+                        render={({ field }) => (
+                          <FormItem className="gap-1 m-0 mb-4 w-full">
+                            <FormLabel className="text-neutral-600 mb-0.75">
+                              {fieldConfig.label}
+                            </FormLabel>
+                            <DatePicker
+                              {...form.register(fieldName)}
+                              field={field}
+                            />
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    );
+                  }
+
+                  if (fieldConfig.type === "textarea") {
+                    return (
+                      <FormTextarea
+                        key={key}
+                        id={fieldName}
+                        form={form}
+                        fieldName={fieldName}
+                        fieldConfig={fieldConfig}
+                      />
+                    );
+                  }
+
+                  return (
+                    <FormInput
+                      key={key}
+                      id={fieldName}
+                      form={form}
+                      fieldName={fieldName}
+                      fieldConfig={fieldConfig}
+                    />
+                  );
+                })}
+
+                {/* Remove Experience Button */}
+                <RemFormBtn
+                  text={"Remove Experience"}
+                  action={() => removeExp(i)}
+                />
+              </div>
+            ))}
+
+            {/* projects */}
+
+            {projectFields.map((item, i) => (
+              <div className="project" key={item.id}>
+                <Separator className="mb-4" />
+                <CardTitle className="mb-4">Project</CardTitle>
+
+                {projectInputs.map((fieldConfig, id) => {
+                  const key = `${fieldConfig.name}-${id}`;
+
+                  const fieldName = `projects.${i}.${fieldConfig.name}`;
+
+                  if (fieldConfig.type === "textarea") {
+                    return (
+                      <FormTextarea
+                        key={key}
+                        id={fieldName}
+                        form={form}
+                        fieldName={fieldName}
+                        fieldConfig={fieldConfig}
+                      />
+                    );
+                  }
+
+                  return (
+                    <FormInput
+                      key={key}
+                      id={fieldName}
+                      form={form}
+                      fieldName={fieldName}
+                      fieldConfig={fieldConfig}
+                    />
+                  );
+                })}
+
+                {/* Remove Project Button */}
+                <RemFormBtn
+                  text={"Remove Project"}
+                  action={() => removeProject(i)}
+                />
+              </div>
+            ))}
+
+            {/* certifications */}
+
+            {certFields.map((item, i) => (
+              <div className="certification" key={`skill-${i}`}>
+                <Separator className="mb-4" />
+                <CardTitle className="mb-4">Certification</CardTitle>
+
+                {certInputs.map((fieldConfig, id) => {
+                  const fieldName = `certifications.${i}.${fieldConfig.name}`;
+                  return (
+                    <FormInput
+                      key={id}
+                      id={fieldName}
+                      form={form}
+                      fieldName={fieldName}
+                      fieldConfig={fieldConfig}
+                    />
+                  );
+                })}
+
+                {/* Remove Project Button */}
+                <RemFormBtn
+                  text={"Remove Certification"}
+                  action={() => removeCert(i)}
+                />
+              </div>
+            ))}
+
+            <div className="btn_group space-y-4">
+              {/* add education */}
+              <AddFormBtn
+                text={"Add Education"}
+                action={() => appendEdu(initials.education[0])}
+              />
+              {/* add skills */}
+              <AddFormBtn
+                text={"Add Skills"}
+                action={() => appendSkill(initials.skills[0])}
+              />
+              {/* add experience */}
+              <AddFormBtn
+                text={"Add Experience"}
+                action={() => appendExp(initials.experience[0])}
+              />
+              {/* add project */}
+              <AddFormBtn
+                text={"Add Project"}
+                action={() => appendProject(initials.projects[0])}
+              />
+              {/* add certification */}
+              <AddFormBtn
+                text={"Add Certification"}
+                action={() => appendCert(initials.certifications[0])}
+              />
+              {/* submit */}
+              <Button
+                className={"w-full py-6 px-4 cursor-pointer rounded-lg"}
+                type="submit"
+              >
+                Submit
+              </Button>
+            </div>
+          </form>
         </Form>
       </CardContent>
     </Card>
