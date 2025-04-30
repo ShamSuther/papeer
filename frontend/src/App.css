@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Barrio&display=swap');
 
 body {
   font-family: "Geist", sans-serif;
@@ -6,7 +7,17 @@ body {
 }
 
 .preview {
-   min-width: 794px;
-  /* height: 1123px; */
+  width: 100%;
+  height: 100%;
+  max-width: 600px;
+  min-height: 800px;
   font-family: 'Times New Roman', Times, serif;
+  transform-origin: top right;
+  transform: scale(0.75);
+}
+
+.barrio-regular {
+  font-family: "Barrio", system-ui;
+  font-weight: 400;
+  font-style: normal;
 }

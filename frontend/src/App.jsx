@@ -21,8 +21,11 @@ function App() {
   return (
     <>
       <main className="bg-slate-100">
+        <div className="w-full flex items-center justify-center p-4 px-8">
+          <div className="barrio-regular text-[2rem] break-keep">Papeer.,</div>
+        </div>
         <div>
-          <div className="flex min-h-svh w-full justify-center p-6 md:p-10">
+          <div className="flex w-full justify-between p-6 md:p-10">
             <div className="w-full max-w-sm">
               <MainForm defaults={defaultValues} setData={setResumeData} />
             </div>
