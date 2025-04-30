@@ -14,6 +14,7 @@ const educationSchema = z.object({
   field_of_study: z.string().optional(),
   start_date: z.string().datetime(),
   end_date: z.string().datetime(),
+  grade: z.string().trim().optional(),
   description: z.string().trim().optional(),
 });
 
@@ -67,14 +68,7 @@ export const formSchema = z.object({
       message: "Name must be at least 4 characters.",
     })
     .trim(),
-  email: z
-    .string()
-    .nonempty("Email is required")
-    .email()
-    .min(5, {
-      message: "Email must be at least 5 characters.",
-    })
-    .trim(),
+  linkedin_url: z.string().trim().optional(),
   mobile_number: z
     .string()
     .nonempty("Mobile number is required")
@@ -87,6 +81,14 @@ export const formSchema = z.object({
     .refine((val) => /^[0-9+]*$/.test(val), {
       message: "Mobile number can only contain digits and the '+' sign.",
     }),
+  email: z
+    .string()
+    .nonempty("Email is required")
+    .email()
+    .min(5, {
+      message: "Email must be at least 5 characters.",
+    })
+    .trim(),
   location: z
     .string()
     .nonempty("Location is required")

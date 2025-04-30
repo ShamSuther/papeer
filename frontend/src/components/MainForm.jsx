@@ -2,7 +2,6 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, useFieldArray } from "react-hook-form";
-import { z } from "zod";
 import { AnimatePresence, motion } from "motion/react";
 
 import { Button } from "@/components/ui/button";
@@ -15,7 +14,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import {
   Card,
   CardTitle,
@@ -23,9 +21,7 @@ import {
   CardDescription,
   CardContent,
 } from "./ui/card";
-import { Textarea } from "./ui/textarea";
-import { CircleMinus, CirclePlus } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { DatePicker } from "./DatePicker";
 import { Separator } from "./ui/separator";
 import FormInput from "./FormInput";
@@ -38,6 +34,7 @@ import RemFormBtn from "./RemFormBtn";
 import { formSchema } from "@/schemas/formSchema";
 
 import {
+  initials,
   personalInfoInputs,
   educationInputs,
   experienceInputs,
@@ -46,65 +43,10 @@ import {
   certInputs,
 } from "@/constants";
 
-export function MainForm() {
-  const [edu, setEdu] = useState(false);
-  const initials = {
-    name: "",
-    email: "",
-    mobile_number: "",
-    location: "",
-    summary: "",
-    education: [
-      {
-        school: "",
-        degree: "",
-        field_of_study: "",
-        start_date: null,
-        end_date: null,
-        description: "",
-      },
-    ],
-    skills: [{ skill_name: "", proficiency: "" }],
-    experience: [
-      {
-        job_title: "",
-        employment_type: "",
-        company: "",
-        start_date: null,
-        end_date: null,
-        description: "",
-        location: "",
-        location_type: "",
-      },
-    ],
-    projects: [
-      {
-        project_name: "",
-        description: "",
-        project_url: "",
-      },
-    ],
-    certifications: [
-      {
-        title: "",
-        issuer: "",
-        credential_url: "",
-      },
-    ],
-  };
-
-  const [resume, setResume] = useState();
-
+export function MainForm({ defaults, setData }) {
   const form = useForm({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      name: "",
-      email: "",
-      mobile_number: "",
-      location: "",
-      summary: "",
-      education: [],
-    },
+    defaultValues: defaults,
   });
 
   // education fields
@@ -162,16 +104,32 @@ export function MainForm() {
   const { clearErrors, formState } = form;
   const { errors } = formState;
 
+  // errors
   useEffect(() => {
     const hasErrors = Object.keys(errors).length > 0;
 
     if (hasErrors) {
       const timer = setTimeout(() => {
         clearErrors();
-      }, 3000);
+      }, 300);
       return () => clearTimeout(timer);
     }
   }, [clearErrors, errors, eduFields]);
+
+  // form inputs
+  useEffect(() => {
+    let timeoutId;
+    const subscription = form.watch((value) => {
+      // const result = formSchema.safeParse(value);
+      timeoutId = setTimeout(() => {
+        setData(value);
+      }, );
+    });
+    return () => {
+      subscription.unsubscribe();
+      clearTimeout(timeoutId);
+    };
+  }, [form, setData]);
 
   function onSubmit(values) {
     console.log(values);

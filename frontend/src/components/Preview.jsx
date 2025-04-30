@@ -1,48 +1,63 @@
+import React, { useEffect } from "react";
 import { Card, CardContent } from "./ui/card";
 
-export default function Preview() {
-  const skills = [
-    {
-      skill_name: "JavaScript",
-      proficiency: "expert",
-    },
-    {
-      skill_name: "Python",
-      proficiency: "intermediate",
-    },
-    {
-      skill_name: "React",
-      proficiency: "expert",
-    },
-    {
-      skill_name: "Node.js",
-      proficiency: "intermediate",
-    },
-    {
-      skill_name: "SQL",
-      proficiency: "expert",
-    },
-    {
-      skill_name: "Docker",
-      proficiency: "beginner",
-    },
-    {
-      skill_name: "AWS",
-      proficiency: "intermediate",
-    },
-    {
-      skill_name: "Figma",
-      proficiency: "beginner",
-    },
-    {
-      skill_name: "Tailwind CSS",
-      proficiency: "expert",
-    },
-    {
-      skill_name: "Git & GitHub",
-      proficiency: "expert",
-    },
-  ];
+export default function Preview({ data }) {
+  const {
+    name,
+    mobile_number,
+    email,
+    linkedin_url,
+    location,
+    summary,
+    education,
+    skills,
+    experience,
+    // projects,
+    // certifications,
+  } = data;
+
+  // const skills = [
+  //   {
+  //     skill_name: "JavaScript",
+  //     proficiency: "expert",
+  //   },
+  //   {
+  //     skill_name: "Python",
+  //     proficiency: "intermediate",
+  //   },
+  //   {
+  //     skill_name: "React",
+  //     proficiency: "expert",
+  //   },
+  //   {
+  //     skill_name: "Node.js",
+  //     proficiency: "intermediate",
+  //   },
+  //   {
+  //     skill_name: "SQL",
+  //     proficiency: "expert",
+  //   },
+  //   {
+  //     skill_name: "Docker",
+  //     proficiency: "beginner",
+  //   },
+  //   {
+  //     skill_name: "AWS",
+  //     proficiency: "intermediate",
+  //   },
+  //   {
+  //     skill_name: "Figma",
+  //     proficiency: "beginner",
+  //   },
+  //   {
+  //     skill_name: "Tailwind CSS",
+  //     proficiency: "expert",
+  //   },
+  //   {
+  //     skill_name: "Git & GitHub",
+  //     proficiency: "expert",
+  //   },
+  // ];
 
   const projects = [
     {
@@ -126,26 +141,41 @@ export default function Preview() {
     },
   ];
 
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
+
   return (
     <Card className="preview max-w-4xl mx-auto p-6 bg-background text-foreground rounded-3xl">
       {/* Header */}
       <div className="text-center">
-        <h1 className="text-[1.8rem] leading-none mt-4 mb-3">John Doe</h1>
+        <h1 className="text-[1.8rem] leading-none mt-4 mb-3">
+          {name ? name : "John Doe"}
+        </h1>
         <p className="text-muted-foreground text-[0.9rem]">
-          +1 123 456 7890 |{" "}
-          <a href="mailto:johndoe@example.com" className="link">
-            johndoe@example.com
-          </a>{" "}
-          |{" "}
+          {mobile_number ? mobile_number : "+1 123 456 7890"} |{" "}
           <a
-            href="https://www.linkedin.com/in/johndoe"
+            href={`mailto:${email ? email : "johndoe@example.com"}`}
             className="link"
-            target="_blank"
-            rel="noopener noreferrer"
           >
-            LinkedIn
+            {email ? email : "johndoe@example.com"}
           </a>{" "}
-          | New York, USA
+          {linkedin_url ? (
+            <>
+              |{" "}
+              <a
+                href={linkedin_url}
+                className="link"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                LinkedIn
+              </a>{" "}
+            </>
+          ) : (
+            ""
+          )}
+          | {location ? location : "New York, USA"}
         </p>
       </div>
 
@@ -153,30 +183,61 @@ export default function Preview() {
       <div>
         <h2 className="section-title">Professional Summary</h2>
         <p className="text-[0.9rem] leading-none">
-          I am a final-year BSCS student with a strong academic record, having
-          made the Dean's List four times and earned a bronze medal for my
-          achievements. Looking for roles in Game development, App development,
-          and similar fields.
+          {summary ? summary : "I am a ..."}
         </p>
       </div>
 
       {/* Education */}
       <div className="w-full ">
         <h2 className="section-title">Education</h2>
-        <div className="flex flex-row justify-between">
-          <div>
-            <h3 className="text-[1.1669rem] leading-none">
-              BS Computer Science
-            </h3>
-            <p className="text-[0.9rem] leading-none italic">
-              FAST National University of Computer and Emerging Sciences (NUCES)
-            </p>
+        {education && education.length > 0 ? (
+          education.map((item, i) => {
+            const {
+              school,
+              degree,
+              field_of_study,
+              start_year,
+              end_year,
+              grade,
+              description,
+            } = item;
+
+            return (
+              <div key={i} className="flex flex-row justify-between gap-2">
+                <div className="max-w-[80%]">
+                  <h3 className="text-[1.1669rem] leading-none">
+                    {degree || "Degree"}{" "}
+                  </h3>
+                  <p className="text-[0.9rem] leading-none italic">
+                    {school || "School"}
+                  </p>
+                  {description && (
+                    <p className="text-[0.8331rem] leading-none">
+                      {description}
+                    </p>
+                  )}
+                </div>
+                <div className="text-[0.9rem] leading-none text-right">
+                  <p className="text-sm">{`${start_year || "from"}–${
+                    end_year || "to"
+                  }`}</p>
+                  {grade && <p className="italic">CGPA: {grade}/4</p>}
+                </div>
+              </div>
+            );
+          })
+        ) : (
+          <div className="flex flex-row justify-between">
+            <div>
+              <h3 className="text-[1.1669rem] leading-none">Degree</h3>
+              <p className="text-[0.9rem] leading-none italic">School</p>
+            </div>
+            <div className="text-[0.9rem] leading-none text-right">
+              <p className="text-sm">from–to</p>
+              <p className="italic">CGPA: 3/4</p>
+            </div>
           </div>
-          <div className="text-[0.9rem] leading-none text-right">
-            <p className="text-sm">2020–2024</p>
-            <p className="italic">CGPA: 3.55/4</p>
-          </div>
-        </div>
+        )}
       </div>
 
       {/* Technical Skills */}
@@ -185,7 +246,11 @@ export default function Preview() {
         <ul className="list-disc list-outside pl-5 whitespace-normal mb-2 grid grid-cols-3">
           {skills.map((item, i) => (
             <li key={`skill-${i}`} className="text-base leading-[1.15]">
-              {item.skill_name} ({item.proficiency})
+              {item
+                ? `${item.skill_name ? item.skill_name : "name"} (${
+                    item.proficiency ? item.proficiency : "proficiency"
+                  })`
+                : "name (proficiency)"}
             </li>
           ))}
         </ul>

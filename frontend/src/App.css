@@ -6,7 +6,7 @@ body {
 }
 
 .preview {
-  width: 794px;
+   min-width: 794px;
   /* height: 1123px; */
   font-family: 'Times New Roman', Times, serif;
 }

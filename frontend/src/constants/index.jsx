@@ -6,15 +6,21 @@ export const personalInfoInputs = [
     type: "text",
   },
   {
+    name: "mobile_number",
+    label: "Mobile Number",
+    placeholder: "+923333333333",
+    type: "text",
+  },
+  {
     name: "email",
     label: "Email Address",
     placeholder: "example@gmail.com",
     type: "email",
   },
   {
-    name: "mobile_number",
-    label: "Mobile Number",
-    placeholder: "+923333333333",
+    name: "linkedin_url",
+    label: "Linkedin",
+    placeholder: "linkedin.com/in/johndoe",
     type: "text",
   },
   {
@@ -44,14 +50,14 @@ export const educationInputs = [
     placeholder: "Bachelor's",
     type: "text",
   },
+  { name: "start_year", label: "Start Year", type: "date" },
+  { name: "end_year", label: "End Year", type: "date" },
   {
-    name: "field_of_study",
-    label: "Field of Study",
-    placeholder: "Business",
+    name: "grade",
+    label: "Grade",
+    placeholder: "CGPA",
     type: "text",
   },
-  { name: "start_date", label: "Start Date", type: "date" },
-  { name: "end_date", label: "End Date", type: "date" },
   {
     name: "description",
     label: "Description",
@@ -150,3 +156,49 @@ export const certInputs = [
     type: "text",
   },
 ];
+
+export const initials = {
+  name: "",
+  mobile_number: "",
+  email: "",
+  linkedin_url: "",
+  location: "",
+  summary: "",
+  education: [
+    {
+      school: "",
+      degree: "",
+      start_year: null,
+      end_year: null,
+      grade: "",
+      description: "",
+    },
+  ],
+  skills: [{ skill_name: "", proficiency: "" }],
+  experience: [
+    {
+      job_title: "",
+      employment_type: "",
+      company: "",
+      start_date: null,
+      end_date: null,
+      description: "",
+      location: "",
+      location_type: "",
+    },
+  ],
+  projects: [
+    {
+      project_name: "",
+      description: "",
+      project_url: "",
+    },
+  ],
+  certifications: [
+    {
+      title: "",
+      issuer: "",
+      credential_url: "",
+    },
+  ],
+};
