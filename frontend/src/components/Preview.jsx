@@ -59,29 +59,29 @@ export default function Preview({ data }) {
   //   },
   // ];
 
-  // const projects = [
-  //   {
-  //     name: "Smart Health Tracker",
-  //     description:
-  //       "A mobile app that monitors real-time health metrics like heart rate, steps, and sleep patterns using React Native and Firebase.",
-  //     project_url: "https://www.google.com/",
-  //   },
-  //   {
-  //     name: "AI-Powered Resume Builder",
-  //     description:
-  //       "A web platform that uses AI to automatically generate tailored resumes and cover letters based on user profiles.",
-  //   },
-  //   {
-  //     name: "Eco-Friendly Marketplace",
-  //     description:
-  //       "An e-commerce website focused on eco-friendly products, integrating Stripe payments and a recommendation engine.",
-  //   },
-  //   {
-  //     name: "Virtual Museum Tour",
-  //     description:
-  //       "A 3D virtual tour experience built with Unity, allowing users to explore historic museums from home using VR.",
-  //   },
-  // ];
+  const projects = [
+    {
+      name: "Smart Health Tracker",
+      description:
+        "A mobile app that monitors real-time health metrics like heart rate, steps, and sleep patterns using React Native and Firebase.",
+      project_url: "https://www.google.com/",
+    },
+    {
+      name: "AI-Powered Resume Builder",
+      description:
+        "A web platform that uses AI to automatically generate tailored resumes and cover letters based on user profiles.",
+    },
+    {
+      name: "Eco-Friendly Marketplace",
+      description:
+        "An e-commerce website focused on eco-friendly products, integrating Stripe payments and a recommendation engine.",
+    },
+    {
+      name: "Virtual Museum Tour",
+      description:
+        "A 3D virtual tour experience built with Unity, allowing users to explore historic museums from home using VR.",
+    },
+  ];
 
   // const certifications = [
   //   {

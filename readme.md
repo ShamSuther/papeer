@@ -12,10 +12,10 @@ Help interns build modern, polished resumes quickly by providing:
 
 ## Tech Stack
 
-- Frontend: React + Tailwind + ShadCN UI
-- Backend: Node.js + Express
-- PDF Engine: PDFKit |
-- Validation: Zod
+- **Frontend:** React + Tailwind + ShadCN UI
+- **Backend:** Node.js + Express
+- **PDF Engine:** PDFKit
+- **Validation:** Zod
 
 ## Features
 

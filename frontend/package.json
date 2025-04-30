@@ -1,8 +1,10 @@
 {
   "name": "frontend",
+  "description": "frontend for Papeer.,",
   "private": true,
   "version": "1.0.0",
   "type": "module",
+  "author": "Sham Shivani",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
