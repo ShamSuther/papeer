@@ -18,9 +18,11 @@ import { stripArrayDefaults } from "./lib/utils";
 function App() {
   const defaultValues = stripArrayDefaults(initials);
   const [resumeData, setResumeData] = useState(defaultValues);
+  
   return (
     <>
       <main className="bg-slate-100">
+        {/* header */}
         <div className="w-full flex items-center justify-center p-4 px-8">
           <div className="barrio-regular text-[2rem] break-keep">Papeer.,</div>
         </div>
@@ -30,6 +32,12 @@ function App() {
               <MainForm defaults={defaultValues} setData={setResumeData} />
             </div>
             <Preview data={resumeData} />
+          </div>
+        </div>
+        {/* footer */}
+        <div className="w-full flex items-center justify-center p-4 px-8">
+          <div className="break-keep">
+            @{new Date().getFullYear()} Papeer.,
           </div>
         </div>
       </main>

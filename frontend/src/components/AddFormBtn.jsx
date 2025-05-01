@@ -23,7 +23,7 @@ const AddFormBtn = ({ text, action }) => {
       className={"bg-neutral-200 w-full py-6 px-4 cursor-pointer rounded-lg"}
       onClick={handleClick}
     >
-      <CirclePlus /> {text}
+       {text}
     </Button>
   );
 };

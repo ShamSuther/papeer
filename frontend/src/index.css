@@ -131,3 +131,7 @@
 .link {
   @apply text-primary hover:underline;
 }
+
+.toast_d{
+  color: #424141 !important;
+}

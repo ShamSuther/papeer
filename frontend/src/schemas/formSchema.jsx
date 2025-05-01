@@ -12,8 +12,12 @@ const educationSchema = z.object({
     .min(10, "Degree must be at least 10 characters.")
     .trim(),
   field_of_study: z.string().optional(),
-  start_date: z.string().datetime(),
-  end_date: z.string().datetime(),
+  start_year: z
+    .string()
+    .regex(/^\d{4}$/, { message: "Start year must be a 4-digit number" }),
+  end_year: z
+    .string()
+    .regex(/^\d{4}$/, { message: "End year must be a 4-digit number" }),
   grade: z.string().trim().optional(),
   description: z.string().trim().optional(),
 });
@@ -27,15 +31,11 @@ const experienceSchema = z.object({
   job_title: z.string().nonempty("Job title is required").trim(),
   employment_type: z.string().trim().optional(),
   company: z.string().nonempty("Company name is required").trim(),
-  start_date: z.string().datetime().optional(),
-  end_date: z
-    .string()
-    .datetime({ message: "End date must be a valid ISO string" }),
   description: z.string().trim().optional(),
   location: z
     .string()
     .nonempty("Location is required")
-    .min(10, "Degree must be at least 10 characters.")
+    .min(10, "Location must be at least 10 characters.")
     .trim(),
   location_type: z.string().trim().optional(),
 });

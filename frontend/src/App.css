@@ -21,3 +21,12 @@ body {
   font-weight: 400;
   font-style: normal;
 }
+
+/* Hide the day grid */
+.rdp-table,
+.rdp-head,
+.rdp-row,
+.rdp-cell,
+.rdp-day {
+  display: none !important;
+}

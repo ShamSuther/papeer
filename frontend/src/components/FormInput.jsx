@@ -7,13 +7,7 @@ import {
 } from "./ui/form";
 import { Input } from "./ui/input";
 
-export default function FormInput({
-  id,
-  form,
-  fieldName,
-  fieldConfig,
-  controlled,
-}) {
+export default function FormInput({ id, form, fieldName, fieldConfig }) {
   return (
     <FormField
       key={id}
@@ -26,10 +20,9 @@ export default function FormInput({
           </FormLabel>
           <FormControl>
             <Input
-              {...(controlled ? form.register(fieldName) : {})}
               type={fieldConfig.type}
-              value={field.value ?? ""}
               placeholder={fieldConfig.placeholder}
+              value={field.value != null ? String(field.value) : ""}
               {...field}
             />
           </FormControl>

@@ -1,7 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useEffect, memo } from "react";
 import { Card, CardContent } from "./ui/card";
 
-export default function Preview({ data }) {
+const Preview = memo(({ data }) => {
   const {
     name,
     mobile_number,
@@ -15,135 +15,6 @@ export default function Preview({ data }) {
     projects,
     certifications,
   } = data;
-
-  // const skills = [
-  //   {
-  //     skill_name: "JavaScript",
-  //     proficiency: "expert",
-  //   },
-  //   {
-  //     skill_name: "Python",
-  //     proficiency: "intermediate",
-  //   },
-  //   {
-  //     skill_name: "React",
-  //     proficiency: "expert",
-  //   },
-  //   {
-  //     skill_name: "Node.js",
-  //     proficiency: "intermediate",
-  //   },
-  //   {
-  //     skill_name: "SQL",
-  //     proficiency: "expert",
-  //   },
-  //   {
-  //     skill_name: "Docker",
-  //     proficiency: "beginner",
-  //   },
-  //   {
-  //     skill_name: "AWS",
-  //     proficiency: "intermediate",
-  //   },
-  //   {
-  //     skill_name: "Figma",
-  //     proficiency: "beginner",
-  //   },
-  //   {
-  //     skill_name: "Tailwind CSS",
-  //     proficiency: "expert",
-  //   },
-  //   {
-  //     skill_name: "Git & GitHub",
-  //     proficiency: "expert",
-  //   },
-  // ];
-
-  const projects = [
-    {
-      name: "Smart Health Tracker",
-      description:
-        "A mobile app that monitors real-time health metrics like heart rate, steps, and sleep patterns using React Native and Firebase.",
-      project_url: "https://www.google.com/",
-    },
-    {
-      name: "AI-Powered Resume Builder",
-      description:
-        "A web platform that uses AI to automatically generate tailored resumes and cover letters based on user profiles.",
-    },
-    {
-      name: "Eco-Friendly Marketplace",
-      description:
-        "An e-commerce website focused on eco-friendly products, integrating Stripe payments and a recommendation engine.",
-    },
-    {
-      name: "Virtual Museum Tour",
-      description:
-        "A 3D virtual tour experience built with Unity, allowing users to explore historic museums from home using VR.",
-    },
-  ];
-
-  // const certifications = [
-  //   {
-  //     title: "Certified Web Developer",
-  //     issuer: "FreeCodeCamp",
-  //     credential_url:
-  //       "https://www.freecodecamp.org/certification/username/responsive-web-design",
-  //   },
-  //   {
-  //     title: "AWS Certified Solutions Architect – Associate",
-  //     issuer: "Amazon Web Services",
-  //     credential_url:
-  //       "https://aws.amazon.com/certification/certified-solutions-architect-associate/",
-  //   },
-  //   {
-  //     title: "Google Data Analytics Professional Certificate",
-  //     issuer: "Google via Coursera",
-  //     credential_url: "https://coursera.org/verify/your-certificate-id",
-  //   },
-  // ];
-
-  // const jobs = [
-  //   {
-  //     job_title: "Software Engineer",
-  //     employment_type: "Full-time",
-  //     company: "Tech Innovations Inc.",
-  //     description: "Developing web applications using React and Node.js.",
-  //     location: "New York, NY",
-  //     location_type: "Hybrid",
-  //   },
-  //   {
-  //     job_title: "Data Scientist",
-  //     employment_type: "Contract",
-  //     company: "Data Insights Ltd.",
-  //     description:
-  //       "Analyzing large datasets to provide actionable insights for clients.",
-  //     location: "San Francisco, CA",
-  //     location_type: "Remote",
-  //   },
-  //   {
-  //     job_title: "UX/UI Designer",
-  //     employment_type: "Part-time",
-  //     company: "Creative Solutions",
-  //     description:
-  //       "Designing user interfaces and enhancing user experiences for mobile apps.",
-  //     location: "Chicago, IL",
-  //     location_type: "On-site",
-  //   },
-  //   {
-  //     job_title: "Project Manager",
-  //     employment_type: "Full-time",
-  //     company: "Global Enterprises",
-  //     description:
-  //       "Managing projects and ensuring timely delivery of product features.",
-  //     location: "Austin, TX",
-  //     location_type: "Hybrid",
-  //   },
-  // ];
-
-  // useEffect(() => {
-  //   console.log(data);
-  // }, [data]);
 
   return (
     <Card className="preview mx-auto p-6 bg-background text-foreground rounded-3xl">
@@ -374,4 +245,6 @@ export default function Preview({ data }) {
       </div> */}
     </Card>
   );
-}
+});
+
+export default Preview;

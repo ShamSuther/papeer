@@ -48,9 +48,9 @@ export function DatePicker({ field }) {
               field.onChange(formattedDate);
             }
           }}
-          disabled={(date) =>
-            date > new Date() || date < new Date("1900-01-01")
-          }
+          fromYear={1900}
+          toYear={new Date().getFullYear()}
+          captionLayout="dropdown"
           initialFocus
         />
       </PopoverContent>
