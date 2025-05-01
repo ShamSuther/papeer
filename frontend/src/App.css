@@ -6,14 +6,27 @@ body {
   font-optical-sizing: auto;
 }
 
+.preview-wrapper {
+  width: 100%;
+  height: auto;
+  max-width: 600px;
+  overflow: hidden;
+  transform: scale(0.75);
+  transform-origin: top left;
+}
+
+@media (width < 768px) {
+  .preview-wrapper{
+    max-width: auto;
+    transform: scale(1);
+  }
+}
+
 .preview {
   width: 100%;
   height: 100%;
-  max-width: 600px;
   min-height: 800px;
   font-family: 'Times New Roman', Times, serif;
-  transform-origin: top right;
-  transform: scale(0.75);
 }
 
 .barrio-regular {

@@ -11,8 +11,9 @@ function generatePDF(data) {
 
     const {
         name,
-        email,
         mobile_number,
+        email,
+        linkedin_url,
         location,
         summary,
         education,
@@ -24,8 +25,8 @@ function generatePDF(data) {
 
 
     doc.fontSize(22).text(name || "John Doe", { align: "center", lineGap: 1, });
-    doc.fontSize(10).text(`${mobile_number} | ${email} | ${location}`, { align: "center" });
-    doc.moveDown(1);
+    doc.fontSize(10).text(`${mobile_number} | ${email} | ${linkedin_url} | ${location}`, { align: "center" });
+    doc.moveDown(2);
 
     if (summary) {
         sectionTitle(doc, "Professional Summary");
@@ -64,6 +65,7 @@ function generatePDF(data) {
             if (exp.description) doc.text(exp.description);
             doc.moveDown(0.15);
         });
+        doc.moveDown();
     }
 
     if (projects && projects.length > 0) {
@@ -71,8 +73,16 @@ function generatePDF(data) {
         projects.forEach((project) => {
             doc.fontSize(14).fillColor("black").text(`${project.project_name} `, { continued: true });
             doc.fontSize(14).text(`(view):`, { link: project.project_url });
-            doc.fontSize(12).font("Times-Roman").fillColor("#424141").text(`${project.description}`, { continued: false, indent: 10,indentAllLines:true });
+            doc.fontSize(12).font("Times-Roman").fillColor("#424141").text(`${project.description}`, { continued: false, indent: 10, indentAllLines: true });
             doc.moveDown(0.25);
+        })
+        doc.moveDown();
+    }
+
+    if (certifications && certifications.length > 0) {
+        sectionTitle(doc, "Certifications");
+        certifications.forEach((cert) => {
+            doc.fontSize(12).fillColor("black").font("Times-Roman").text(`• ${cert.title} (${cert.issuer})`, { link: cert.credential_url });
         })
         doc.moveDown();
     }

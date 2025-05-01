@@ -175,8 +175,11 @@ export function MainForm({ defaults, setData }) {
 
   const onSubmit = async (values) => {
     try {
-      const request = await fetch("http://localhost:5000/api/resume", {
+      const request = await fetch("http://localhost:5000/api/resume/", {
         method: "POST",
+        headers:{
+          "Content-Type":"application/json"
+        },
         body: JSON.stringify(values),
       });
 
@@ -185,7 +188,7 @@ export function MainForm({ defaults, setData }) {
         console.log(result);
       }
     } catch (err) {
-      console.log(err);
+      console.err(err);
     }
   };
 
@@ -247,28 +250,6 @@ export function MainForm({ defaults, setData }) {
                     {educationInputs.map((fieldConfig, _) => {
                       const key = `${item.id}-${fieldConfig.name}`;
                       const fieldName = `education.${i}.${fieldConfig.name}`;
-
-                      // if (fieldConfig.type === "date") {
-                      //   return (
-                      //     <FormField
-                      //       key={key}
-                      //       control={form.control}
-                      //       name={fieldName}
-                      //       render={({ field }) => (
-                      //         <FormItem className="gap-1 m-0 mb-4 w-full">
-                      //           <FormLabel className="text-neutral-600 mb-0.75">
-                      //             {fieldConfig.label}
-                      //           </FormLabel>
-                      //           <DatePicker
-                      //             {...form.register(fieldName)}
-                      //             field={field}
-                      //           />
-                      //           <FormMessage />
-                      //         </FormItem>
-                      //       )}
-                      //     />
-                      //   );
-                      // }
 
                       if (fieldConfig.type === "textarea") {
                         return (
@@ -366,28 +347,6 @@ export function MainForm({ defaults, setData }) {
                       const key = `${fieldConfig.name}-${id}`;
 
                       const fieldName = `experience.${i}.${fieldConfig.name}`;
-
-                      if (fieldConfig.type === "date") {
-                        return (
-                          <FormField
-                            key={key}
-                            control={form.control}
-                            name={fieldName}
-                            render={({ field }) => (
-                              <FormItem className="gap-1 m-0 mb-4 w-full">
-                                <FormLabel className="text-neutral-600 mb-0.75">
-                                  {fieldConfig.label}
-                                </FormLabel>
-                                <DatePicker
-                                  {...form.register(fieldName)}
-                                  field={field}
-                                />
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                        );
-                      }
 
                       if (fieldConfig.type === "textarea") {
                         return (
