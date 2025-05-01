@@ -12,15 +12,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { toast } from "sonner";
 
 export default function FormSelect({ id, form, fieldName, fieldConfig }) {
-  function onSubmit({ value }) {
-    if (value) {
-      toast(value);
-    }
-  }
-
   return (
     <FormField
       key={id}
@@ -34,7 +27,6 @@ export default function FormSelect({ id, form, fieldName, fieldConfig }) {
             </FormLabel>
             <Select
               onValueChange={field.onChange}
-              onOpenChange={() => onSubmit(field)}
               defaultValue={field.value ?? ""}
               {...field}
             >

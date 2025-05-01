@@ -125,11 +125,11 @@
 }
 
 .section-title {
-  @apply w-full text-[#424141] leading-none text-[1.3rem] mb-[0.5rem] border-b-[0.0419rem] border-[#424141];
+  @apply w-full text-[#424141] leading-none text-[1.3rem] mb-[0.5rem];
 }
 
 .link {
-  @apply text-primary hover:underline;
+  @apply text-primary;
 }
 
 .toast_d{

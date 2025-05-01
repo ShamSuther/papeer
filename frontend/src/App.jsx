@@ -18,7 +18,7 @@ import { stripArrayDefaults } from "./lib/utils";
 function App() {
   const defaultValues = stripArrayDefaults(initials);
   const [resumeData, setResumeData] = useState(defaultValues);
-  
+
   return (
     <>
       <main className="bg-slate-100">
@@ -26,19 +26,25 @@ function App() {
         <div className="w-full flex items-center justify-center p-4 px-8">
           <div className="barrio-regular text-[2rem] break-keep">Papeer.,</div>
         </div>
-        <div>
-          <div className="flex w-full justify-between p-6 md:p-10">
-            <div className="w-full max-w-sm">
-              <MainForm defaults={defaultValues} setData={setResumeData} />
+
+        {/* content */}
+        <div className="flex flex-col md:flex-row w-full justify-between gap-6 md:gap-8 p-6 md:p-10">
+          {/* form */}
+          <div className="w-full md:max-w-sm">
+            <MainForm defaults={defaultValues} setData={setResumeData} />
+          </div>
+
+          {/* preview */}
+          <div className="w-full flex justify-center md:justify-end">
+            <div className="preview-wrapper">
+              <Preview data={resumeData} />
             </div>
-            <Preview data={resumeData} />
           </div>
         </div>
+
         {/* footer */}
         <div className="w-full flex items-center justify-center p-4 px-8">
-          <div className="break-keep">
-            @{new Date().getFullYear()} Papeer.,
-          </div>
+          <div className="break-keep">@{new Date().getFullYear()} Papeer.,</div>
         </div>
       </main>
     </>

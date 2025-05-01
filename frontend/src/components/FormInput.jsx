@@ -22,7 +22,7 @@ export default function FormInput({ id, form, fieldName, fieldConfig }) {
             <Input
               type={fieldConfig.type}
               placeholder={fieldConfig.placeholder}
-              value={field.value != null ? String(field.value) : ""}
+              value={field.value ?? ""}
               {...field}
             />
           </FormControl>

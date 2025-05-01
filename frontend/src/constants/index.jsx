@@ -173,8 +173,8 @@ export const initials = {
     {
       school: "",
       degree: "",
-      start_year: null,
-      end_year: null,
+      start_year: "",
+      end_year: "",
       grade: "",
       description: "",
     },
